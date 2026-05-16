@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Archivio personale — fotografie di viaggio e lavori in legno.' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content="Ivo Falavigna" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preload" href="/fonts/SourceSerif4.woff2" as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="page">
+      <main class="content">
+        <slot />
+      </main>
+      <footer class="footer">
+        <a href="/about">Chi sono</a>
+      </footer>
+    </div>
+
+    <style>
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 64px var(--content-padding) 48px;
+      }
+
+      .content {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 0 auto;
+        flex: 1;
+      }
+
+      .footer {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 80px auto 0;
+        padding-top: 32px;
+        border-top: 0.5px solid var(--color-border);
+        font-family: var(--font-sans);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+      }
+
+      .footer a {
+        text-decoration: none;
+        color: var(--color-muted);
+      }
+
+      .footer a:hover {
+        color: var(--color-text);
+      }
+    </style>
+  </body>
+</html>

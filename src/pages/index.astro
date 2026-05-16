@@ -1,19 +1,76 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="it">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content="Archivio personale — fotografie di viaggio e lavori in legno." />
-		<meta name="author" content="Ivo Falavigna" />
-		<title>Ivo Falavigna</title>
-	</head>
-	<body>
-		<h1>Ivo Falavigna</h1>
-	</body>
-</html>
+<BaseLayout title="Ivo Falavigna">
+  <header class="intro">
+    <h1>Ivo Falavigna</h1>
+    <p class="lead">
+      Vivo a Sanremo. Da anni fotografo i luoghi che attraverso e lavoro il legno nel mio laboratorio. Questo è uno spazio personale dove archivio le due cose.
+    </p>
+  </header>
+
+  <section class="sections">
+    <a href="/travels" class="section-link">
+      <span class="section-label">Travels</span>
+    </a>
+    <a href="/laboratorio" class="section-link">
+      <span class="section-label">Laboratorio</span>
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 80px;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .lead {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text);
+    max-width: 480px;
+  }
+
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .section-link {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--color-border);
+    transition: color 0.15s ease;
+  }
+
+  .section-link:last-child {
+    border-bottom: none;
+  }
+
+  .section-link:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  .section-label {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+  }
+</style>
