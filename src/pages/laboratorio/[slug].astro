@@ -1,0 +1,193 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('laboratory');
+  return items.map((item: CollectionEntry<'laboratory'>) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CollectionEntry<'laboratory'>;
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('it-IT', {
+    month: 'long',
+    year: 'numeric',
+  });
+};
+---
+
+<BaseLayout title={`${item.data.title} — Ivo Falavigna`} description={item.data.description}>
+  <header class="item-header">
+    <a href="/laboratorio/" class="back">← Laboratorio</a>
+    <span class="date">{formatDate(item.data.date)}</span>
+    <h1>{item.data.title}</h1>
+    <p class="description">{item.data.description}</p>
+
+    {(item.data.materials || item.data.dimensions) && (
+      <dl class="specs">
+        {item.data.dimensions && (
+          <div class="spec-row">
+            <dt>Dimensioni</dt>
+            <dd>{item.data.dimensions}</dd>
+          </div>
+        )}
+        {item.data.materials && item.data.materials.length > 0 && (
+          <div class="spec-row">
+            <dt>Materiali</dt>
+            <dd>
+              <ul class="materials">
+                {item.data.materials.map((m: string) => <li>{m}</li>)}
+              </ul>
+            </dd>
+          </div>
+        )}
+      </dl>
+    )}
+  </header>
+
+  {item.body && item.body.trim().length > 0 && (
+    <div class="prose">
+      <Content />
+    </div>
+  )}
+
+  <section class="photos">
+    {item.data.photos.map((photo: string, i: number) => (
+      <figure class="photo">
+        <img src={photo} alt={`${item.data.title} — ${i + 1}`} loading="lazy" />
+      </figure>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .item-header {
+    margin-bottom: 64px;
+  }
+
+  .back {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    margin-bottom: 48px;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+
+  .date {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .description {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+
+  .specs {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--color-border);
+  }
+
+  .spec-row:last-child {
+    border-bottom: none;
+  }
+
+  .spec-row dt {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding-top: 2px;
+  }
+
+  .spec-row dd {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .materials {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .materials li {
+    margin-bottom: 4px;
+  }
+
+  .materials li:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose {
+    margin: 48px 0;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.2em;
+  }
+
+  .photos {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    margin-top: 80px;
+  }
+
+  .photo {
+    margin: 0;
+  }
+
+  .photo img {
+    width: 100%;
+    height: auto;
+    background-color: var(--color-border);
+  }
+</style>

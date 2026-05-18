@@ -1,0 +1,123 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const items = await getCollection('laboratory');
+
+const sortedItems = items.sort(
+  (a: CollectionEntry<'laboratory'>, b: CollectionEntry<'laboratory'>) =>
+    b.data.date.getTime() - a.data.date.getTime()
+);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('it-IT', {
+    month: 'long',
+    year: 'numeric',
+  });
+};
+---
+
+<BaseLayout title="Laboratorio — Ivo Falavigna">
+  <header class="page-header">
+    <a href="/" class="back">← Home</a>
+    <h1>Laboratorio</h1>
+  </header>
+
+  <ul class="item-list">
+    {sortedItems.map((item: CollectionEntry<'laboratory'>) => (
+      <li class="item">
+        <a href={`/laboratorio/${item.id}/`} class="item-link">
+          <div class="item-text">
+            <span class="item-date">{formatDate(item.data.date)}</span>
+            <h2 class="item-title">{item.data.title}</h2>
+            {item.data.dimensions && (
+              <p class="item-dimensions">{item.data.dimensions}</p>
+            )}
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 64px;
+  }
+
+  .back {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    margin-bottom: 32px;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .item-list {
+    list-style: none;
+  }
+
+  .item {
+    border-bottom: 0.5px solid var(--color-border);
+  }
+
+  .item:first-child {
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .item-link {
+    display: block;
+    padding: 28px 0;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .item-link:hover {
+    opacity: 1;
+  }
+
+  .item-link:hover .item-title {
+    color: var(--color-accent);
+  }
+
+  .item-date {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+
+  .item-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.2;
+    transition: color 0.15s ease;
+  }
+
+  .item-dimensions {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+    margin-top: 8px;
+  }
+</style>

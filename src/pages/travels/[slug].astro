@@ -1,0 +1,135 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const travels = await getCollection('travels');
+  return travels.map((travel: CollectionEntry<'travels'>) => ({
+    params: { slug: travel.id },
+    props: { travel },
+  }));
+}
+
+interface Props {
+  travel: CollectionEntry<'travels'>;
+}
+
+const { travel } = Astro.props;
+const { Content } = await render(travel);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('it-IT', {
+    month: 'long',
+    year: 'numeric',
+  });
+};
+---
+
+<BaseLayout title={`${travel.data.title} — Ivo Falavigna`} description={travel.data.description}>
+  <header class="travel-header">
+    <a href="/travels/" class="back">← Travels</a>
+    <span class="date">{formatDate(travel.data.date)}</span>
+    <h1>{travel.data.title}</h1>
+    {travel.data.location && (
+      <p class="location">{travel.data.location}</p>
+    )}
+    <p class="description">{travel.data.description}</p>
+  </header>
+
+  {travel.body && travel.body.trim().length > 0 && (
+    <div class="prose">
+      <Content />
+    </div>
+  )}
+
+  <section class="photos">
+    {travel.data.photos.map((photo: string, i: number) => (
+      <figure class="photo">
+        <img src={photo} alt={`${travel.data.title} — ${i + 1}`} loading="lazy" />
+      </figure>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .travel-header {
+    margin-bottom: 64px;
+  }
+
+  .back {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    margin-bottom: 48px;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+
+  .date {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .location {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: var(--color-muted);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .description {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text);
+    max-width: 480px;
+  }
+
+  .prose {
+    margin: 48px 0;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.2em;
+  }
+
+  .photos {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    margin-top: 80px;
+  }
+
+  .photo {
+    margin: 0;
+  }
+
+  .photo img {
+    width: 100%;
+    height: auto;
+    background-color: var(--color-border);
+  }
+</style>

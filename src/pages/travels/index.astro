@@ -1,0 +1,123 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const travels = await getCollection('travels');
+
+const sortedTravels = travels.sort(
+  (a: CollectionEntry<'travels'>, b: CollectionEntry<'travels'>) =>
+    b.data.date.getTime() - a.data.date.getTime()
+);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('it-IT', {
+    month: 'long',
+    year: 'numeric',
+  });
+};
+---
+
+<BaseLayout title="Travels — Ivo Falavigna">
+  <header class="page-header">
+    <a href="/" class="back">← Home</a>
+    <h1>Travels</h1>
+  </header>
+
+  <ul class="travel-list">
+    {sortedTravels.map((travel: CollectionEntry<'travels'>) => (
+      <li class="travel-item">
+        <a href={`/travels/${travel.id}/`} class="travel-link">
+          <div class="travel-text">
+            <span class="travel-date">{formatDate(travel.data.date)}</span>
+            <h2 class="travel-title">{travel.data.title}</h2>
+            {travel.data.location && (
+              <p class="travel-location">{travel.data.location}</p>
+            )}
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 64px;
+  }
+
+  .back {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    margin-bottom: 32px;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .travel-list {
+    list-style: none;
+  }
+
+  .travel-item {
+    border-bottom: 0.5px solid var(--color-border);
+  }
+
+  .travel-item:first-child {
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .travel-link {
+    display: block;
+    padding: 28px 0;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .travel-link:hover {
+    opacity: 1;
+  }
+
+  .travel-link:hover .travel-title {
+    color: var(--color-accent);
+  }
+
+  .travel-date {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+
+  .travel-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.2;
+    transition: color 0.15s ease;
+  }
+
+  .travel-location {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--color-muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+</style>
