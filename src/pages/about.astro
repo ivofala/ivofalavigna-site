@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Chi sono — Ivo Falavigna" description="Hotel Manager a Sanremo. Lavoro il legno e viaggio.">
+  <header class="page-header">
+    <a href="/" class="back">← Home</a>
+  </header>
+
+  <article class="about">
+    <figure class="portrait">
+      <img src="/portrait/ivo.jpg" alt="Ivo Falavigna" />
+    </figure>
+
+    <div class="bio">
+      <h1>Chi sono</h1>
+
+      <p>Sono Hotel Manager di un cinque stelle Lusso a Sanremo.</p>
+
+      <p>Da sempre lavoro il legno. A volte per riparare, a volte per costruire qualcosa da zero: un tavolo, una panca, un cassetto. La stessa curiosità che mi spinge a fare le cose con le mani mi porta a viaggiare. Cerco luoghi e modi di vivere diversi dal mio.</p>
+
+      <p>Questo sito è il posto dove archivio le due cose.</p>
+
+      <p class="contact">
+        <a href="mailto:ivo@ivofalavigna.com">ivo@ivofalavigna.com</a>
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 48px;
+  }
+
+  .back {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+
+  .about {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .portrait {
+    margin: 0;
+  }
+
+  .portrait img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background-color: var(--color-border);
+    filter: grayscale(100%);
+  }
+
+  .bio h1 {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .bio p {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-bottom: 18px;
+  }
+
+  .bio p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .contact {
+    margin-top: 32px !important;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--color-border);
+    font-family: var(--font-sans) !important;
+    font-size: 13px !important;
+  }
+
+  .contact a {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--color-border);
+    padding-bottom: 2px;
+    transition: border-color 0.15s ease;
+  }
+
+  .contact a:hover {
+    border-bottom-color: var(--color-text);
+  }
+
+  /* Mobile: stack verticale */
+  @media (max-width: 560px) {
+    .about {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .portrait {
+      max-width: 160px;
+    }
+  }
+</style>
