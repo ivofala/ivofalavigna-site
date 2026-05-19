@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import homeFoto from '../assets/photos/home.jpg';
 ---
 
 <BaseLayout title="Ivo Falavigna">
@@ -9,6 +11,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       Vivo a Sanremo. Da anni fotografo i luoghi che attraverso e lavoro il legno nel mio laboratorio. Questo è uno spazio personale dove archivio le due cose.
     </p>
   </header>
+
+  <figure class="home-photo">
+    <Image
+      src={homeFoto}
+      alt="Fiordo tra montagne sotto un cielo coperto, scia dell'acqua in primo piano."
+      widths={[560, 1120, 1680]}
+      sizes="(max-width: 600px) 100vw, 560px"
+      format="webp"
+      quality={85}
+      loading="eager"
+    />
+  </figure>
 
   <section class="sections">
     <a href="/travels" class="section-link">
@@ -22,7 +36,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <style>
   .intro {
-    margin-bottom: 80px;
+    margin-bottom: 56px;
   }
 
   h1 {
@@ -41,11 +55,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     max-width: 480px;
   }
 
+  .home-photo {
+    margin: 0 0 72px 0;
+  }
+
+  .home-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   .sections {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 64px;
+    margin-top: 0;
     padding-top: 40px;
     border-top: 0.5px solid var(--color-border);
   }
